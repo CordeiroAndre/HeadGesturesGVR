@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NodDetectionCardboard : MonoBehaviour
 {
     private Vector3 angles;
     public float timeLimit; // Time limit to detect the head gesture
     private bool up = false, down = false;
+    public UnityEvent nodCompletedEvent;
 
     
-    void checkMovement()
+    void CheckMovement()
     {
         if (angles.x < 330 && angles.x > 300 && !up)
         {
@@ -23,11 +25,15 @@ public class NodDetectionCardboard : MonoBehaviour
         if (up && down) // head nod complete condition
         {
             //put the method you with to call when the nod completes here.
+            if (nodCompletedEvent != null)
+            {
+                nodCompletedEvent.Invoke();
+            }
             resetGesture();
 
         }
     }
-    public void resetGesture()
+    public void ResetGesture()
     {
         angles = new Vector3();
         up = false;
